@@ -25,9 +25,9 @@ export function Header({ completed, total }: HeaderProps) {
               <p className="text-slate-400 text-sm">of {total} completed</p>
             </div>
 
-            <button className="px-4 py-2 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 transform hover:scale-105">
+            {/* <button className="px-4 py-2 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 transform hover:scale-105">
               + New Task
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -43,17 +43,6 @@ export function Header({ completed, total }: HeaderProps) {
           />
         </div>
       </div>
-
-      <style>{`
-        @keyframes shimmer {
-          0%, 100% {
-            background-position: 200% 0;
-          }
-          50% {
-            background-position: 0 0;
-          }
-        }
-      `}</style>
     </header>
   );
 }

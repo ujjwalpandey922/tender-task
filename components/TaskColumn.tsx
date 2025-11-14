@@ -5,7 +5,7 @@ import type React from "react";
 import type { Column as ColumnType, TaskStatus } from "@/types/task";
 
 import { useState } from "react";
-import { useTaskStore } from "@/lib/useTaskStore";
+import { useTaskStore } from "@/hooks/useTaskStore";
 import { TaskCard } from "./TaskCard";
 
 interface TaskColumnProps {

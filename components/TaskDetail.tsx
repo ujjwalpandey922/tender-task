@@ -4,7 +4,7 @@ import type React from "react";
 
 import type { Task } from "@/types/task";
 import { useState } from "react";
-import { useTaskComments } from "@/hooks/use-task-comments";
+import { useTaskComments } from "@/hooks/useTaskComments";
 import { CommentThread } from "./CommentThread";
 interface TaskDetailProps {
   task: Task;
@@ -39,8 +39,14 @@ export function TaskDetail({ task, onClose }: TaskDetailProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-slate-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-700">
+    <div
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-slate-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-700"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="sticky top-0 bg-slate-800 border-b border-slate-700 p-6 flex items-start justify-between">
           <div className="flex-1">
@@ -49,7 +55,7 @@ export function TaskDetail({ task, onClose }: TaskDetailProps) {
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white transition-colors text-2xl"
+            className="text-slate-400 hover:text-white transition-colors text-2xl cursor-pointer"
           >
             ✕
           </button>

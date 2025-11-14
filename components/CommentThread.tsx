@@ -1,6 +1,7 @@
 "use client";
 
 import type { Comment } from "@/types/comment";
+import { Trash2 } from "lucide-react";
 
 interface CommentThreadProps {
   comments: Comment[];
@@ -27,9 +28,9 @@ export function CommentThread({
               <p className="text-white font-medium text-sm">{comment.author}</p>
               <button
                 onClick={() => onDeleteComment(comment.id)}
-                className="text-slate-500 hover:text-red-400 transition-colors text-xs"
+                className="text-slate-500 hover:text-red-400 transition-colors text-xs cursor-pointer"
               >
-                Delete
+                <Trash2 size={14} />
               </button>
             </div>
             <p className="text-slate-300 text-sm">{comment.content}</p>

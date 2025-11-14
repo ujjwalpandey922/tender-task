@@ -4,8 +4,10 @@ import type React from "react";
 
 import type { Task, TaskPriority } from "@/types/task";
 import { useState } from "react";
-import { useTaskStore } from "@/lib/useTaskStore";
+import { useTaskStore } from "@/hooks/useTaskStore";
 import { TaskDetail } from "./TaskDetail";
+import Swal from "sweetalert2";
+import { Trash2 } from "lucide-react";
 
 interface TaskCardProps {
   task: Task;
@@ -16,13 +18,13 @@ const priorityConfig: Record<
   TaskPriority,
   { color: string; label: string; icon: string }
 > = {
-  low: { color: "from-blue-500 to-blue-600", label: "Low", icon: "↓" },
+  low: { color: "from-blue-500 to-blue-600", label: "Low", icon: "L" },
   medium: {
     color: "from-yellow-500 to-yellow-600",
     label: "Medium",
-    icon: "→",
+    icon: "M",
   },
-  high: { color: "from-orange-500 to-orange-600", label: "High", icon: "↑" },
+  high: { color: "from-orange-500 to-orange-600", label: "High", icon: "H" },
   urgent: { color: "from-red-500 to-red-600", label: "Urgent", icon: "⚡" },
 };
 
@@ -39,6 +41,7 @@ export function TaskCard({ task, index }: TaskCardProps) {
   const isOverdue = dueDate < today && task.status !== "completed";
 
   const handleDragStart = (e: React.DragEvent) => {
+    // Set the dragged element's ID
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("taskId", task.id);
     setIsDragging(true);
@@ -48,9 +51,32 @@ export function TaskCard({ task, index }: TaskCardProps) {
     setIsDragging(false);
   };
 
-  const handleDelete = () => {
-    if (confirm("Are you sure you want to delete this task?")) {
+  const handleDelete = async () => {
+    const result = await Swal.fire({
+      title: "Delete this task?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e63946",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete",
+      cancelButtonText: "Cancel",
+      background: "#1e293b",
+      color: "#fff",
+    });
+
+    if (result.isConfirmed) {
       deleteTask(task.id);
+
+      Swal.fire({
+        title: "Deleted!",
+        text: "Task has been removed.",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+        background: "#1e293b",
+        color: "#fff",
+      });
     }
   };
 
@@ -66,7 +92,7 @@ export function TaskCard({ task, index }: TaskCardProps) {
         className={`bg-slate-700/40 border border-slate-600/30 rounded-lg p-4 cursor-grab active:cursor-grabbing transition-all duration-200 group ${
           isDragging
             ? "opacity-50 border-slate-500/60"
-            : "hover:border-slate-500/60 hover:bg-slate-700/60 hover:shadow-lg hover:-translate-y-1"
+            : "hover:border-slate-500/60 hover:bg-slate-700/60 hover:shadow-lg "
         }`}
         style={{
           animation: `slideIn 0.3s ease-out ${index * 0.05}s backwards`,
@@ -113,37 +139,29 @@ export function TaskCard({ task, index }: TaskCardProps) {
 
         {/* Hover action bar */}
         {isHovered && (
-          <div className="pt-3 border-t border-slate-600/50 flex gap-2 animate-in fade-in duration-200">
-            <button className="flex-1 px-2 py-1.5 bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 text-xs font-medium rounded transition-colors">
+          <div
+            className="pt-3 border-t border-slate-600/50 flex gap-2 animate-in fade-in duration-200"
+            style={{
+              animation: "actionBarIn 0.25s ease-out forwards",
+            }}
+          >
+            <button className="flex-1 px-2 py-1.5 bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 text-xs font-medium rounded transition-colors cursor-pointer">
               View
             </button>
-            <button className="flex-1 px-2 py-1.5 bg-slate-600/20 hover:bg-slate-600/40 text-slate-300 text-xs font-medium rounded transition-colors">
+            {/* <button className="flex-1 px-2 py-1.5 bg-slate-600/20 hover:bg-slate-600/40 text-slate-300 text-xs font-medium rounded transition-colors">
               Edit
-            </button>
+            </button> */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 handleDelete();
               }}
-              className="px-2 py-1.5 bg-red-600/20 hover:bg-red-600/40 text-red-300 text-xs font-medium rounded transition-colors"
+              className="px-2 py-1.5 bg-red-600/20 hover:bg-red-600/40 text-red-300 text-xs font-medium rounded transition-colors cursor-pointer"
             >
-              ✕
+              <Trash2 size={14} />
             </button>
           </div>
         )}
-
-        <style>{`
-          @keyframes slideIn {
-            from {
-              opacity: 0;
-              transform: translateY(10px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-        `}</style>
       </div>
 
       {/* Task Detail Modal */}

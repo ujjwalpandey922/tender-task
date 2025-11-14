@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 import type { Comment } from "@/types/comment";
-import { useTaskStore } from "@/lib/useTaskStore";
+import { useTaskStore } from "@/hooks/useTaskStore";
 
 export function useTaskComments(taskId: string) {
   const { comments, addComment, deleteComment } = useTaskStore();

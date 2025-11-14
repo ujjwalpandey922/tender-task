@@ -2,7 +2,7 @@
 
 import type { Column as ColumnType } from "@/types/task";
 import { Header } from "./Header";
-import { useTaskStore } from "@/lib/useTaskStore";
+import { useTaskStore } from "@/hooks/useTaskStore";
 import { TaskColumn } from "./TaskColumn";
 
 const COLUMNS: ColumnType[] = [
