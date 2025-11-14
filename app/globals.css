@@ -162,13 +162,15 @@
 }
 
 @keyframes actionBarIn {
-  from {
+  0% {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(3px);
+    filter: blur(2px);
   }
-  to {
+  100% {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
 }
 

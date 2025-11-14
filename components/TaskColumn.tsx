@@ -37,7 +37,7 @@ export function TaskColumn({ column }: TaskColumnProps) {
 
   return (
     <div
-      className={`w-96 h-[calc(100vh-220px)] shrink-0 bg-slate-800/40 border rounded-xl p-4 transition-all duration-300 ${
+      className={`w-96 h-[calc(100vh-200px)] shrink-0 bg-slate-800/40 border rounded-xl p-4 transition-all duration-300 ${
         isOver
           ? "border-blue-400/60 bg-blue-900/10 shadow-lg shadow-blue-500/20"
           : "border-slate-700/50 hover:bg-slate-800/60"
@@ -57,7 +57,7 @@ export function TaskColumn({ column }: TaskColumnProps) {
       </div>
 
       {/* Tasks container */}
-      <div className="space-y-3 h-full max-h-[calc(100vh-200px)] overflow-y-auto pr-1">
+      <div className="space-y-3 h-[calc(100vh-275px)] p-2 overflow-y-auto">
         {column.tasks.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-slate-500 transition-opacity duration-300">
             <div className="text-4xl mb-2">📭</div>
