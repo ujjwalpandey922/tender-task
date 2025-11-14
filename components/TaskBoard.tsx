@@ -25,11 +25,11 @@ export default function TaskBoard() {
   const completedTasks = tasks.filter((t) => t.status === "completed").length;
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-linear-to-br from-neutral-800 via-neutral-900 to-neutral-950">
       <Header completed={completedTasks} total={totalTasks} />
 
       <div className="px-6 pb-6">
-        <div className="flex gap-6 overflow-x-auto pb-4">
+        <div className="flex gap-6 overflow-x-auto p-2">
           {columns.map((column) => (
             <TaskColumn key={column.id} column={column} />
           ))}

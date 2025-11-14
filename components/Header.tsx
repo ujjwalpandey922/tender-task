@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 
 interface HeaderProps {
   completed: number;
@@ -7,10 +6,8 @@ interface HeaderProps {
 }
 
 export function Header({ completed, total }: HeaderProps) {
-  const [showStats, setShowStats] = useState(true);
-
   return (
-    <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-10 transition-all duration-300">
+    <header className="border-b border-slate-800 bg-inherit backdrop-blur-sm sticky top-0 z-10 transition-all duration-300 mb-6">
       <div className="px-6 py-6">
         <div className="flex items-center justify-between">
           <div>

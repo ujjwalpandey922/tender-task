@@ -120,3 +120,32 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* HARD THEME SCROLLBAR — DARK MODE */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f1113; /* deep charcoal track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b434c; /* dark hard gray thumb */
+  border-radius: 4px;
+  border: 2px solid #0f1113; /* inset effect for dark mode */
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a5460; /* lighter hover */
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #5a6573; /* active state */
+}
+
+::-webkit-scrollbar-corner {
+  background: #0f1113;
+}

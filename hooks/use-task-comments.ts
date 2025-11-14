@@ -1,13 +1,15 @@
 "use client";
 
-// Custom hook for managing task comments - separates comment logic from components
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import type { Comment } from "@/types/comment";
+import { useTaskStore } from "@/lib/useTaskStore";
 
 export function useTaskComments(taskId: string) {
-  const [comments, setComments] = useState<Comment[]>([]);
+  const { comments, addComment, deleteComment } = useTaskStore();
 
-  const addComment = useCallback(
+  const taskComments = comments.filter((c) => c.taskId === taskId);
+
+  const handleAddComment = useCallback(
     (content: string, author: string) => {
       const newComment: Comment = {
         id: Math.random().toString(36).substr(2, 9),
@@ -16,15 +18,22 @@ export function useTaskComments(taskId: string) {
         content,
         createdAt: new Date().toISOString(),
       };
-      setComments((prev) => [...prev, newComment]);
+      addComment(newComment);
       return newComment;
     },
-    [taskId]
+    [taskId, addComment]
   );
 
-  const deleteComment = useCallback((commentId: string) => {
-    setComments((prev) => prev.filter((c) => c.id !== commentId));
-  }, []);
+  const handleDeleteComment = useCallback(
+    (commentId: string) => {
+      deleteComment(commentId);
+    },
+    [deleteComment]
+  );
 
-  return { comments, addComment, deleteComment };
+  return {
+    comments: taskComments,
+    addComment: handleAddComment,
+    deleteComment: handleDeleteComment,
+  };
 }

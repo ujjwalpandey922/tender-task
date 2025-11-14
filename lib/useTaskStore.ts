@@ -1,13 +1,19 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import type { Task, TaskStatus } from "@/types/task";
+import type { Comment } from "@/types/comment";
 
 interface TaskStore {
   tasks: Task[];
+  comments: Comment[];
   addTask: (task: Task) => void;
   updateTask: (id: string, updates: Partial<Task>) => void;
   deleteTask: (id: string) => void;
   moveTask: (id: string, newStatus: TaskStatus) => void;
   getTasksByStatus: (status: TaskStatus) => Task[];
+  addComment: (comment: Comment) => void;
+  deleteComment: (commentId: string) => void;
+  getCommentsByTaskId: (taskId: string) => Comment[];
 }
 
 // Mock initial data
@@ -64,35 +70,58 @@ const initialTasks: Task[] = [
   },
 ];
 
-export const useTaskStore = create<TaskStore>((set, get) => ({
-  tasks: initialTasks,
+export const useTaskStore = create<TaskStore>()(
+  persist(
+    (set, get) => ({
+      tasks: initialTasks,
+      comments: [],
 
-  addTask: (task: Task) =>
-    set((state) => ({
-      tasks: [...state.tasks, task],
-    })),
+      addTask: (task: Task) =>
+        set((state) => ({
+          tasks: [...state.tasks, task],
+        })),
 
-  updateTask: (id: string, updates: Partial<Task>) =>
-    set((state) => ({
-      tasks: state.tasks.map((task) =>
-        task.id === id ? { ...task, ...updates } : task
-      ),
-    })),
+      updateTask: (id: string, updates: Partial<Task>) =>
+        set((state) => ({
+          tasks: state.tasks.map((task) =>
+            task.id === id ? { ...task, ...updates } : task
+          ),
+        })),
 
-  deleteTask: (id: string) =>
-    set((state) => ({
-      tasks: state.tasks.filter((task) => task.id !== id),
-    })),
+      deleteTask: (id: string) =>
+        set((state) => ({
+          tasks: state.tasks.filter((task) => task.id !== id),
+        })),
 
-  moveTask: (id: string, newStatus: TaskStatus) =>
-    set((state) => ({
-      tasks: state.tasks.map((task) =>
-        task.id === id ? { ...task, status: newStatus } : task
-      ),
-    })),
+      moveTask: (id: string, newStatus: TaskStatus) =>
+        set((state) => ({
+          tasks: state.tasks.map((task) =>
+            task.id === id ? { ...task, status: newStatus } : task
+          ),
+        })),
 
-  getTasksByStatus: (status: TaskStatus) => {
-    const state = get();
-    return state.tasks.filter((task) => task.status === status);
-  },
-}));
+      getTasksByStatus: (status: TaskStatus) => {
+        const state = get();
+        return state.tasks.filter((task) => task.status === status);
+      },
+
+      addComment: (comment: Comment) =>
+        set((state) => ({
+          comments: [...state.comments, comment],
+        })),
+
+      deleteComment: (commentId: string) =>
+        set((state) => ({
+          comments: state.comments.filter((c) => c.id !== commentId),
+        })),
+
+      getCommentsByTaskId: (taskId: string) => {
+        const state = get();
+        return state.comments.filter((c) => c.taskId === taskId);
+      },
+    }),
+    {
+      name: "tender-tasks-store",
+    }
+  )
+);
